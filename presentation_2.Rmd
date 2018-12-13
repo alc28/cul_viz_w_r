@@ -1,0 +1,103 @@
+---
+title: "Visualization with R: Beechtree Example"
+author: "Adam Chandler"
+date: "12/18/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE, warning=FALSE, echo=TRUE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Visualization with R: Beechtree Example
+
+## CFR 483.30 
+
+(e) Nurse staffing information  
+
+(1) Data requirements. The facility must post the following information on a daily basis:  
+(i) Facility name.  
+(ii) The current date.  
+(iii) The total number and the actual hours worked by the following categories of licensed and unlicensed nursing staff directly responsible for resident care per shift: (A) Registered nurses. (B) Licensed practical nurses or licensed vocational nurses (as defined under State law). (C) Certified nurse aides.  
+(iv) Resident census.  
+
+(2) Posting requirements.  
+(i) The facility must post the nurse staffing data specified in paragraph (e)(1) of this section on a daily basis at the beginning of each shift.  
+(ii) Data must be posted as follows: (A) Clear and readable format. (B) In a prominent place readily accessible to residents and visitors.  
+
+(3) Public access to posted nurse staffing data. The facility must, upon oral or written request, make nurse staffing data available to the public for review at a cost not to exceed the community standard.
+
+(4) Facility data retention requirements. The facility must maintain the posted daily nurse staffing data for a minimum of 18 months, or as required by State law, whichever is greater.  
+
+
+## Example staff posting
+
+<img src="data/20180403_173039.jpg" width="1000">  
+
+## Data
+
+
+```{r, message=FALSE}
+# load libraries
+
+library(tidyverse)
+library(lubridate)
+library(stringr)
+
+```
+
+```{r, warning=FALSE}
+# load and prepare data
+
+df_newyork <- read_rds("data/newyork_2018.rds")
+df <- df_newyork %>%
+  filter(provnum == '335017')
+
+```
+
+
+```{r, warning=FALSE}
+# explore the data
+
+glimpse(df)
+
+```
+
+
+
+## Visualization
+
+
+```{r warning=FALSE, fig.width=10, fig.height=7}
+
+
+df_q2 <- df %>%
+  filter(workdate > "2018-03-31")
+
+ggplot(df_q2, aes(workdate, residents_per_cna), vjust = 0.3) +
+  geom_point(size = 2.5, aes(fill = day), shape = 21) + scale_fill_brewer("day") +
+  geom_line(size = 0.02) +
+  #scale_x_date(date_breaks="1 week", date_labels = "%A %b %d" ) +
+  scale_x_date(date_breaks="1 week", date_labels = "%b %d" ) +
+  scale_y_continuous(limits = c(8, 15), breaks = seq(8,15, by = 1)) +
+  ggtitle("\nResidents per CNA, April - June 2018", subtitle = "Beechtree Center for Rehabilitation and Nursing, Ithaca NY") +
+  xlab("") +
+  ylab("\nResidents per CNA") +
+  labs(caption = paste("Residents per CNA = 24 / CNA hours per resident day \nData source: https://data.cms.gov/browse?q=PBJ \nCompiled by Adam Chandler, Beechtree Family Council,", now(), "\n\n")) +
+  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(panel.grid.minor.y = element_blank(),
+        panel.grid.major.y = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.x = element_blank(),
+        plot.title = element_text(size=14, face="bold.italic"),
+        plot.caption = element_text(size = 7),
+        legend.position = c(0.8, 0.97),
+        legend.key = element_blank(),
+        legend.background = element_blank(),
+        legend.direction = "horizontal",
+        legend.title = element_blank()
+  ) +
+  guides(fill=guide_legend(nrow=1))
+
+```
+
