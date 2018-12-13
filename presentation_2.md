@@ -21,7 +21,7 @@ library(webshot)
 
 
 ```r
-webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg")
+webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg", delay = 0.5)
 ```
 
 ![](presentation_2_files/figure-html/unnamed-chunk-2-1.jpg)<!-- -->
@@ -57,7 +57,9 @@ webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg")
 
 
 ```r
-# load and prepare data
+# load and prepare PBJ data from CMS
+# https://data.cms.gov/browse?q=pbj&sortBy=relevance
+# newyork_2018.rds is a subset of the PBJ data. RDS is a fileformat used in R, which saves column data types.
 
 df_newyork <- read_rds("data/newyork_2018.rds")
 df <- df_newyork %>%
@@ -113,6 +115,7 @@ glimpse(df)
 
 
 ```r
+# filter to 2018 q2 only
 df_q2 <- df %>%
   filter(workdate > "2018-03-31")
 
@@ -152,12 +155,10 @@ ggsave(plot = last_plot(), filename = "output/beechtree_cna_staffing_pbj_2018_ap
 
 ## Addendum
 
-### Dataset from data.cms.gov
-
 
 
 ```r
-webshot("https://data.cms.gov/browse?q=pbj&sortBy=relevance", "data/data_cms_gov.jpg")
+webshot("https://data.cms.gov/browse?q=pbj&sortBy=relevance", "data/data_cms_gov.jpg", delay = 0.5)
 ```
 
 ![](presentation_2_files/figure-html/unnamed-chunk-7-1.jpg)<!-- -->
