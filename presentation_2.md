@@ -140,3 +140,18 @@ ggplot(df_q2, aes(workdate, residents_per_cna), vjust = 0.3) +
 ggsave(plot = last_plot(), filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.jpg", width=11, height=7,dpi = 300)
 ```
 
+
+## Addendum
+
+### Dataset from data.cms.gov
+
+
+
+```r
+library(webshot)
+
+webshot("https://data.cms.gov/browse?q=pbj&sortBy=relevance", "data/data_cms_gov.jpg")
+```
+
+![](presentation_2_files/figure-html/unnamed-chunk-6-1.jpg)<!-- -->
+
