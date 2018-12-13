@@ -110,21 +110,20 @@ df_q2 <- df %>%
 ggplot(df_q2, aes(workdate, residents_per_cna), vjust = 0.3) +
   geom_point(size = 2.5, aes(fill = day), shape = 21) + scale_fill_brewer("day") +
   geom_line(size = 0.02) +
-  #scale_x_date(date_breaks="1 week", date_labels = "%A %b %d" ) +
   scale_x_date(date_breaks="1 week", date_labels = "%b %d" ) +
   scale_y_continuous(limits = c(8, 15), breaks = seq(8,15, by = 1)) +
   ggtitle("\nResidents per CNA, April - June 2018", subtitle = "Beechtree Center for Rehabilitation and Nursing, Ithaca NY") +
   xlab("") +
-  ylab("\nResidents per CNA") +
+  ylab("Residents per CNA") +
   labs(caption = paste("Residents per CNA = 24 / CNA hours per resident day \nData source: https://data.cms.gov/browse?q=PBJ \nCompiled by Adam Chandler, Beechtree Family Council,", now(), "\n\n")) +
-  theme(axis.text.x = element_text(angle = 30, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.5)) +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.major.x = element_blank(),
         panel.grid.minor.x = element_blank(),
         plot.title = element_text(size=14, face="bold.italic"),
         plot.caption = element_text(size = 7),
-        legend.position = c(0.8, 0.97),
+        legend.position = c(0.83, 0.97),
         legend.key = element_blank(),
         legend.background = element_blank(),
         legend.direction = "horizontal",
@@ -134,4 +133,10 @@ ggplot(df_q2, aes(workdate, residents_per_cna), vjust = 0.3) +
 ```
 
 ![](presentation_2_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
+
+
+```r
+ggsave(plot = last_plot(), filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.jpg", width=11, height=7,dpi = 300)
+```
 
