@@ -9,6 +9,23 @@ output:
 
 
 
+
+```r
+# load libraries
+
+library(tidyverse)
+library(lubridate)
+library(stringr)
+library(webshot)
+```
+
+
+```r
+webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg")
+```
+
+![](presentation_2_files/figure-html/unnamed-chunk-2-1.jpg)<!-- -->
+
 ## Visualization with R: Beechtree Example
 
 ## CFR 483.30 
@@ -37,14 +54,6 @@ output:
 ## Data
 
 
-
-```r
-# load libraries
-
-library(tidyverse)
-library(lubridate)
-library(stringr)
-```
 
 
 ```r
@@ -132,7 +141,7 @@ ggplot(df_q2, aes(workdate, residents_per_cna), vjust = 0.3) +
   guides(fill=guide_legend(nrow=1))
 ```
 
-![](presentation_2_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](presentation_2_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 
 
@@ -148,10 +157,8 @@ ggsave(plot = last_plot(), filename = "output/beechtree_cna_staffing_pbj_2018_ap
 
 
 ```r
-library(webshot)
-
 webshot("https://data.cms.gov/browse?q=pbj&sortBy=relevance", "data/data_cms_gov.jpg")
 ```
 
-![](presentation_2_files/figure-html/unnamed-chunk-6-1.jpg)<!-- -->
+![](presentation_2_files/figure-html/unnamed-chunk-7-1.jpg)<!-- -->
 

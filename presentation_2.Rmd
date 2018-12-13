@@ -11,6 +11,22 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r, message=FALSE}
+# load libraries
+
+library(tidyverse)
+library(lubridate)
+library(stringr)
+library(webshot)
+
+```
+
+```{r}
+
+webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg")
+
+```
+
 ## Visualization with R: Beechtree Example
 
 ## CFR 483.30 
@@ -39,14 +55,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Data
 
 
-```{r, message=FALSE}
-# load libraries
-
-library(tidyverse)
-library(lubridate)
-library(stringr)
-
-```
 
 ```{r, warning=FALSE}
 # load and prepare data
@@ -116,8 +124,6 @@ ggsave(plot = last_plot(), filename = "output/beechtree_cna_staffing_pbj_2018_ap
 
 
 ```{r}
-
-library(webshot)
 
 webshot("https://data.cms.gov/browse?q=pbj&sortBy=relevance", "data/data_cms_gov.jpg")
 
