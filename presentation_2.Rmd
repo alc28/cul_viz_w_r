@@ -1,5 +1,5 @@
 ---
-title: "Visualization with R: Beechtree Example"
+title: "Visualization with R Example: Staffing at Beechtree Center for Rehabilitation and Nursing, Ithaca, NY"
 author: "Adam Chandler"
 date: "12/18/2018"
 output: 
@@ -27,9 +27,7 @@ webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg", delay = 0.5
 
 ```
 
-## Visualization with R: Beechtree Example
-
-## CFR 483.30 
+# 42 CFR 483.30 - Nursing services.
 
 (e) Nurse staffing information  
 
@@ -46,6 +44,8 @@ webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg", delay = 0.5
 (3) Public access to posted nurse staffing data. The facility must, upon oral or written request, make nurse staffing data available to the public for review at a cost not to exceed the community standard.
 
 (4) Facility data retention requirements. The facility must maintain the posted daily nurse staffing data for a minimum of 18 months, or as required by State law, whichever is greater.  
+
+source: https://www.gpo.gov/fdsys/granule/CFR-2011-title42-vol5/CFR-2011-title42-vol5-sec483-30 
 
 
 ## Example staff posting
@@ -115,17 +115,46 @@ ggplot(df_q2, aes(workdate, residents_per_cna), vjust = 0.3) +
 
 ```{r}
 
-ggsave(plot = last_plot(), filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.jpg", width=11, height=7,dpi = 300)
+ggsave(plot = last_plot(), filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.jpg", width=11, height=7,dpi = 600)
 
 ```
 
+## Additional context
 
-## Addendum
 
+### Beechtree Family Council
+
+https://osf.io/awfhp/wiki/home/ 
+
+Butler, Matt. “Nursing Home Shade.” Ithaca Times, November 18, 2018, pp. 1,7-8. https://issuu.com/ithacatimes/docs/november_14__2018
+
+“Staffing Issues at New York Nursing Homes.” News Radio 810 & 103.1 WGY, July 27, 2018. https://wgy.iheart.com/content/2018-07-27-staffing-issues-at-new-york-nursing-homes/.
+
+Rau, Jordan. “New Data Set Helps Reporter Pinpoint Critical Staffing Concerns in Skilled Nursing Facilities.” Association of Health Care Journalists, July 25, 2018. https://healthjournalism.org/resources-articles-details.php?id=429#.W1nMUNIzq00.
+
+“‘Like A Ghost Town’: Erratic Nursing Home Staffing Revealed Through New Records,” July 18, 2018. Huffington Post. https://www.huffingtonpost.com/entry/like-a-ghost-town-erratic-nursing-home-staffing_us_5b4e511ae4b013392edfa262.
+
+Teller, Sara E. “Medicare Ratings Updated with Nursing Home Staffing Rates.” Legal Reader (blog), July 16, 2018. https://www.legalreader.com/medicare-ratings-updated-nursing-home-staffing-rates/.
+
+Rau, Jordan, and Kaiser Health News. “‘Like a Ghost Town’: Erratic Nursing Home Staffing Revealed through New Records - Philly.” Philly.com, July 13, 2018. http://www.philly.com/philly/health/like-a-ghost-town-erratic-nursing-home-staffing-revealed-through-new-records-20180713.html.
+
+“Most Nursing Homes Are Not Adequately Staffed, New Federal Data Says.” PBS NewsHour, July 13, 2018. https://www.pbs.org/newshour/health/most-nursing-homes-are-not-adequately-staffed-new-federal-data-says.
+
+Rau, Jordan. “‘Like A Ghost Town’: Erratic Nursing Home Staffing Revealed Through New Records.” Kaiser Health News (blog), July 13, 2018. https://khn.org/news/like-a-ghost-town-erratic-nursing-home-staffing-revealed-through-new-records/.
+
+Rau, Jordan. “‘It’s Almost Like a Ghost Town.’ Most Nursing Homes Overstated Staffing for Years.” The New York Times, July 8, 2018, sec. Health. https://www.nytimes.com/2018/07/07/health/nursing-homes-staffing-medicare.html.
+
+Brown, Jessica. “Letter: Thanks for Repairing Mechanized Wheelchairs.” Ithaca Journal, June 23, 2018. https://www.ithacajournal.com.
+
+
+
+### Payroll Based Nurse Staffing Data
+
+https://data.cms.gov/browse?q=pbj&sortBy=relevance  
 
 ```{r}
+
 
 webshot("https://data.cms.gov/browse?q=pbj&sortBy=relevance", "data/data_cms_gov.jpg", delay = 0.5)
 
 ```
-
