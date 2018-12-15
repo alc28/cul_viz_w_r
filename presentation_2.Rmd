@@ -33,6 +33,23 @@ webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg", delay = 0.5
 <img src="data/20180403_173039.jpg" width="1000">  
 
 
+```{r}
+
+# shift 0600 - 1400
+90 / 10
+
+# shift 1400  - 2200
+90 / 12
+
+# 2200 - 0600
+90 / 5
+
+# average across 3 shifts
+90 / ((10 + 12 + 5) / 3)
+
+```
+
+
 # 42 CFR 483.30 - Nursing services.
 
 (e) Nurse staffing information  
@@ -59,14 +76,14 @@ source: https://www.gpo.gov/fdsys/granule/CFR-2011-title42-vol5/CFR-2011-title42
 ## Centers for Medicare & Medicaid Services (CMS) Data
 
 ```{r}
-webshot("http://cms.gov", "data/cms_gov.png", delay = 0.5)
+webshot("http://cms.gov", "data/cms_gov.png", delay = 1.0)
 
-webshot("http://data.cms.gov", "data/data_cms_gov.png", delay = 0.5)
+# webshot("http://data.cms.gov", "data/data_cms_gov.png", delay = 0.5)
 
 ```
 
 
-### Payroll-Based Journal (PBJ)staffing data submitted by long term care facilities 
+### Payroll-Based Journal (PBJ) staffing data submitted by long term care facilities 
 
 https://data.cms.gov/browse?q=pbj&sortBy=relevance  
 
@@ -119,26 +136,20 @@ df %>%
 df %>%
   filter(workdate == "2018-04-03") %>%
   mutate(cna_hprd = hrs_cna / mdscensus,
-         residents_per_cna = 24 / cna_hprd
-         ) %>%
-  select(mdscensus, hrs_cna, cna_hprd, residents_per_cna)
-
-
-
-
+         residents_per_cna = 24 / cna_hprd) %>%
+  select(workdate, day, mdscensus, hrs_cna, cna_hprd, residents_per_cna)
 
 
 ```
 
-
-
-## ggplot2
-
+## Residents per CNA, 2018 Q2, using ggplot2
 
 ```{r warning=FALSE, fig.width=12, fig.height=8}
 
 # filter to 2018 q2 only
 df %>%
+  filter(workdate >"2018-03-31",
+         workdate < "2018-07-01") %>%
   ggplot(aes(workdate, residents_per_cna), vjust = 0.3) +
   geom_point(size = 2.5, aes(fill = day), shape = 21) + scale_fill_brewer("day") +
   geom_line(size = 0.02) +
@@ -171,9 +182,26 @@ df %>%
 
 ```{r}
 
-ggsave(plot = last_plot(), filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.png", width=11, height=7,dpi = 600)
+ggsave(plot = last_plot(),
+       filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.png",
+       width=11,
+       height=6,
+       dpi = 600)
+
+ggsave(plot = last_plot(),
+       filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.pdf",
+       width=11,
+       height=8.5,
+       dpi = 600)
 
 ```
+
+
+### Data / Ink Ratio (Tufte)
+
+Open png  
+
+
 
 ## Beechtree Family Council
 
@@ -206,7 +234,7 @@ Brown, Jessica. “Letter: Thanks for Repairing Mechanized Wheelchairs.” Ithac
 
 shot_nyt <- "data/Rau_Jordan_Ghost_Town_NYTimes_July_8_2018.png"
 
-webshot("https://www.nytimes.com/2018/07/07/health/nursing-homes-staffing-medicare.html", shot_nyt, delay = 0.5)
+webshot("https://www.nytimes.com/2018/07/07/health/nursing-homes-staffing-medicare.html", shot_nyt, delay = 1.0)
 
 
 ```

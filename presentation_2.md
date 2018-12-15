@@ -32,6 +32,44 @@ webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg", delay = 0.5
 <img src="data/20180403_173039.jpg" width="1000">  
 
 
+
+```r
+# shift 0600 - 1400
+90 / 10
+```
+
+```
+## [1] 9
+```
+
+```r
+# shift 1400  - 2200
+90 / 12
+```
+
+```
+## [1] 7.5
+```
+
+```r
+# 2200 - 0600
+90 / 5
+```
+
+```
+## [1] 18
+```
+
+```r
+# average across 3 shifts
+90 / ((10 + 12 + 5) / 3)
+```
+
+```
+## [1] 10
+```
+
+
 # 42 CFR 483.30 - Nursing services.
 
 (e) Nurse staffing information  
@@ -59,19 +97,17 @@ source: https://www.gpo.gov/fdsys/granule/CFR-2011-title42-vol5/CFR-2011-title42
 
 
 ```r
-webshot("http://cms.gov", "data/cms_gov.png", delay = 0.5)
+webshot("http://cms.gov", "data/cms_gov.png", delay = 1.0)
 ```
 
-![](presentation_2_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+![](presentation_2_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
 ```r
-webshot("http://data.cms.gov", "data/data_cms_gov.png", delay = 0.5)
+# webshot("http://data.cms.gov", "data/data_cms_gov.png", delay = 0.5)
 ```
 
-![](presentation_2_files/figure-html/unnamed-chunk-3-2.png)<!-- -->
 
-
-### Payroll Based Nurse Staffing data (PBJ)
+### Payroll-Based Journal (PBJ) staffing data submitted by long term care facilities 
 
 https://data.cms.gov/browse?q=pbj&sortBy=relevance  
 
@@ -80,7 +116,7 @@ https://data.cms.gov/browse?q=pbj&sortBy=relevance
 webshot("https://data.cms.gov/Special-Programs-Initiatives-Long-Term-Care-Facili/PBJ-Daily-Nurse-Staffing-CY-2018Q2/7aeu-b3qs", "data/pbj_data_cms_gov.png", delay = 0.5)
 ```
 
-![](presentation_2_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+![](presentation_2_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 ### Filter to facility (Beechtree) by provnum
 
@@ -140,7 +176,7 @@ glimpse(df)
 
 ## Residents per CNA formula
 
-"My measure is 24/HPRD. So 2.4 C.N.A. HPRD = 1 C.N.A. to 10 residents. It probably understates the RN hours during the 1st and 2nd shifts and overstates them on the night shift, but there's nothing to be done about that since the data isn't broken down by shifts." [Jordan Rau, Kaiser Health]
+"My measure is 24/HPRD. So 2.4 C.N.A. HPRD = 1 C.N.A. to 10 residents. It probably understates the RN hours during the 1st and 2nd shifts and overstates them on the night shift, but there's nothing to be done about that since the data isn't broken down by shifts." [Jordan Rau, Kaiser Health News journalist]
 
 
 
@@ -203,35 +239,30 @@ df %>%
 df %>%
   filter(workdate == "2018-04-03") %>%
   mutate(cna_hprd = hrs_cna / mdscensus,
-         residents_per_cna = 24 / cna_hprd
-         ) %>%
-  select(mdscensus, hrs_cna, cna_hprd, residents_per_cna)
+         residents_per_cna = 24 / cna_hprd) %>%
+  select(workdate, day, mdscensus, hrs_cna, cna_hprd, residents_per_cna)
 ```
 
 ```
-## # A tibble: 1 x 4
-##   mdscensus hrs_cna cna_hprd residents_per_cna
-##       <int>   <dbl>    <dbl>             <dbl>
-## 1        88    218.     2.48              9.67
+## # A tibble: 1 x 6
+##   workdate   day   mdscensus hrs_cna cna_hprd residents_per_cna
+##   <date>     <ord>     <int>   <dbl>    <dbl>             <dbl>
+## 1 2018-04-03 Tue          88    218.     2.48              9.67
 ```
 
-
-
-## ggplot2
-
+## Residents per CNA, 2018 Q2, using ggplot2
 
 
 ```r
 # filter to 2018 q2 only
-df_q2 <- df %>%
-  filter(workdate > "2018-03-31")
-
-ggplot(df_q2, aes(workdate, residents_per_cna), vjust = 0.3) +
+df %>%
+  filter(workdate >"2018-03-31",
+         workdate < "2018-07-01") %>%
+  ggplot(aes(workdate, residents_per_cna), vjust = 0.3) +
   geom_point(size = 2.5, aes(fill = day), shape = 21) + scale_fill_brewer("day") +
   geom_line(size = 0.02) +
   scale_x_date(date_breaks="1 week", date_labels = "%b %d" ) +
   scale_y_continuous(limits = c(8, 15), breaks = seq(8,15, by = 1)) +
-  # ggtitle("\nResidents per CNA, April - June 2018", subtitle = "Beechtree Center for Rehabilitation and Nursing, Ithaca NY") +
   labs(title = "Residents per CNA, April - June 2018",
        subtitle = "Beechtree Center for Rehabilitation and Nursing, Ithaca NY",
        caption = paste("Residents per CNA = 24 / CNA hours per resident day \nData source: https://data.cms.gov/browse?q=PBJ \nCompiled by Adam Chandler, Beechtree Family Council,",
@@ -255,13 +286,30 @@ ggplot(df_q2, aes(workdate, residents_per_cna), vjust = 0.3) +
   guides(fill=guide_legend(nrow=1))
 ```
 
-![](presentation_2_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+![](presentation_2_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 
 
 ```r
-ggsave(plot = last_plot(), filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.png", width=11, height=7,dpi = 600)
+ggsave(plot = last_plot(),
+       filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.png",
+       width=11,
+       height=6,
+       dpi = 600)
+
+ggsave(plot = last_plot(),
+       filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.pdf",
+       width=11,
+       height=8.5,
+       dpi = 600)
 ```
+
+
+### Data / Ink Ratio (Tufte)
+
+Open png  
+
+
 
 ## Beechtree Family Council
 
@@ -294,7 +342,7 @@ Brown, Jessica. “Letter: Thanks for Repairing Mechanized Wheelchairs.” Ithac
 ```r
 shot_nyt <- "data/Rau_Jordan_Ghost_Town_NYTimes_July_8_2018.png"
 
-webshot("https://www.nytimes.com/2018/07/07/health/nursing-homes-staffing-medicare.html", shot_nyt, delay = 0.5)
+webshot("https://www.nytimes.com/2018/07/07/health/nursing-homes-staffing-medicare.html", shot_nyt, delay = 1.0)
 ```
 
-![](presentation_2_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+![](presentation_2_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
