@@ -26,6 +26,12 @@ webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg", delay = 0.5
 
 ![](presentation_2_files/figure-html/unnamed-chunk-2-1.jpg)<!-- -->
 
+
+## Example Beectree staff posting
+
+<img src="data/20180403_173039.jpg" width="1000">  
+
+
 # 42 CFR 483.30 - Nursing services.
 
 (e) Nurse staffing information  
@@ -47,13 +53,36 @@ webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg", delay = 0.5
 source: https://www.gpo.gov/fdsys/granule/CFR-2011-title42-vol5/CFR-2011-title42-vol5-sec483-30 
 
 
-## Example staff posting
-
-<img src="data/20180403_173039.jpg" width="1000">  
-
-## Data
 
 
+## Centers for Medicare & Medicaid Services (CMS) Data
+
+
+```r
+webshot("http://cms.gov", "data/cms_gov.png", delay = 0.5)
+```
+
+![](presentation_2_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
+
+```r
+webshot("http://data.cms.gov", "data/data_cms_gov.png", delay = 0.5)
+```
+
+![](presentation_2_files/figure-html/unnamed-chunk-3-2.png)<!-- -->
+
+
+### Payroll Based Nurse Staffing data (PBJ)
+
+https://data.cms.gov/browse?q=pbj&sortBy=relevance  
+
+
+```r
+webshot("https://data.cms.gov/Special-Programs-Initiatives-Long-Term-Care-Facili/PBJ-Daily-Nurse-Staffing-CY-2018Q2/7aeu-b3qs", "data/pbj_data_cms_gov.png", delay = 0.5)
+```
+
+![](presentation_2_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
+
+### Filter to facility (Beechtree) by provnum
 
 
 ```r
@@ -109,8 +138,86 @@ glimpse(df)
 ```
 
 
+## Residents per CNA formula
 
-## Visualization
+"My measure is 24/HPRD. So 2.4 C.N.A. HPRD = 1 C.N.A. to 10 residents. It probably understates the RN hours during the 1st and 2nd shifts and overstates them on the night shift, but there's nothing to be done about that since the data isn't broken down by shifts." [Jordan Rau, Kaiser Health]
+
+
+
+```r
+# Example, April 3, 2018
+
+df %>%
+  filter(workdate == "2018-04-03") %>%
+  glimpse()
+```
+
+```
+## Observations: 1
+## Variables: 29
+## $ provnum             <chr> "335017"
+## $ provname            <chr> "BEECHTREE CENTER FOR REHABILITATION AND N...
+## $ workdate            <date> 2018-04-03
+## $ mdscensus           <int> 88
+## $ hrs_rndon           <dbl> 7.5
+## $ hrs_rndon_emp       <dbl> 7.5
+## $ hrs_rndon_ctr       <dbl> 0
+## $ hrs_rnadmin         <dbl> 20.75
+## $ hrs_rnadmin_emp     <dbl> 20.75
+## $ hrs_rnadmin_ctr     <dbl> 0
+## $ hrs_rn              <dbl> 62.32
+## $ hrs_rn_emp          <dbl> 62.32
+## $ hrs_rn_ctr          <dbl> 0
+## $ hrs_lpnadmin        <dbl> 0
+## $ hrs_lpnadmin_emp    <dbl> 0
+## $ hrs_lpnadmin_ctr    <int> 0
+## $ hrs_lpn             <dbl> 59.19
+## $ hrs_lpn_emp         <dbl> 26.19
+## $ hrs_lpn_ctr         <dbl> 33
+## $ hrs_cna             <dbl> 218.35
+## $ hrs_cna_emp         <dbl> 210.85
+## $ hrs_cna_ctr         <dbl> 7.5
+## $ cna_hprd            <dbl> 2.48
+## $ lpn_hprd            <dbl> 0.67
+## $ rn_hprd             <dbl> 0.71
+## $ day                 <ord> Tue
+## $ residents_per_cna   <dbl> 9.7
+## $ residents_per_rnlpn <dbl> 17.4
+## $ daytype             <ord> weekday
+```
+
+```r
+df %>%
+  filter(workdate == "2018-04-03") %>%
+  select(mdscensus, hrs_cna)
+```
+
+```
+## # A tibble: 1 x 2
+##   mdscensus hrs_cna
+##       <int>   <dbl>
+## 1        88    218.
+```
+
+```r
+df %>%
+  filter(workdate == "2018-04-03") %>%
+  mutate(cna_hprd = hrs_cna / mdscensus,
+         residents_per_cna = 24 / cna_hprd
+         ) %>%
+  select(mdscensus, hrs_cna, cna_hprd, residents_per_cna)
+```
+
+```
+## # A tibble: 1 x 4
+##   mdscensus hrs_cna cna_hprd residents_per_cna
+##       <int>   <dbl>    <dbl>             <dbl>
+## 1        88    218.     2.48              9.67
+```
+
+
+
+## ggplot2
 
 
 
@@ -124,10 +231,14 @@ ggplot(df_q2, aes(workdate, residents_per_cna), vjust = 0.3) +
   geom_line(size = 0.02) +
   scale_x_date(date_breaks="1 week", date_labels = "%b %d" ) +
   scale_y_continuous(limits = c(8, 15), breaks = seq(8,15, by = 1)) +
-  ggtitle("\nResidents per CNA, April - June 2018", subtitle = "Beechtree Center for Rehabilitation and Nursing, Ithaca NY") +
+  # ggtitle("\nResidents per CNA, April - June 2018", subtitle = "Beechtree Center for Rehabilitation and Nursing, Ithaca NY") +
+  labs(title = "Residents per CNA, April - June 2018",
+       subtitle = "Beechtree Center for Rehabilitation and Nursing, Ithaca NY",
+       caption = paste("Residents per CNA = 24 / CNA hours per resident day \nData source: https://data.cms.gov/browse?q=PBJ \nCompiled by Adam Chandler, Beechtree Family Council,",
+                       now(),
+                       "\n\n")) +
   xlab("") +
   ylab("Residents per CNA") +
-  labs(caption = paste("Residents per CNA = 24 / CNA hours per resident day \nData source: https://data.cms.gov/browse?q=PBJ \nCompiled by Adam Chandler, Beechtree Family Council,", now(), "\n\n")) +
   theme(axis.text.x = element_text(angle = 0, hjust = 0.5)) +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.major.y = element_blank(),
@@ -144,20 +255,19 @@ ggplot(df_q2, aes(workdate, residents_per_cna), vjust = 0.3) +
   guides(fill=guide_legend(nrow=1))
 ```
 
-![](presentation_2_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
+![](presentation_2_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 
 
 ```r
-ggsave(plot = last_plot(), filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.jpg", width=11, height=7,dpi = 600)
+ggsave(plot = last_plot(), filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.png", width=11, height=7,dpi = 600)
 ```
 
-## Additional context
+## Beechtree Family Council
 
+#### Website: https://osf.io/awfhp/wiki/home/ 
 
-### Beechtree Family Council
-
-https://osf.io/awfhp/wiki/home/ 
+#### References
 
 Butler, Matt. “Nursing Home Shade.” Ithaca Times, November 18, 2018, pp. 1,7-8. https://issuu.com/ithacatimes/docs/november_14__2018
 
@@ -181,13 +291,10 @@ Brown, Jessica. “Letter: Thanks for Repairing Mechanized Wheelchairs.” Ithac
 
 
 
-### Payroll Based Nurse Staffing Data
-
-https://data.cms.gov/browse?q=pbj&sortBy=relevance  
-
-
 ```r
-webshot("https://data.cms.gov/browse?q=pbj&sortBy=relevance", "data/data_cms_gov.jpg", delay = 0.5)
+shot_nyt <- "data/Rau_Jordan_Ghost_Town_NYTimes_July_8_2018.png"
+
+webshot("https://www.nytimes.com/2018/07/07/health/nursing-homes-staffing-medicare.html", shot_nyt, delay = 0.5)
 ```
 
-![](presentation_2_files/figure-html/unnamed-chunk-7-1.jpg)<!-- -->
+![](presentation_2_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
