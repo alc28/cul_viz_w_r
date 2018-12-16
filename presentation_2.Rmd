@@ -162,7 +162,7 @@ df %>%
 
 ## Residents per CNA, 2018 Q2, using ggplot2
 
-```{r warning=FALSE}
+```{r warning=FALSE, fig.width=11, fig.height=8}
 
 # filter to 2018 q2 only
 df %>%
