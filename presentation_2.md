@@ -1,5 +1,5 @@
 ---
-title: "Visualization with R Example: Staffing at Beechtree Center for Rehabilitation and Nursing, Ithaca, NY"
+title: "CNA Staffing at Beechtree Center for Rehabilitation and Nursing, Ithaca, NY"
 author: "Adam Chandler"
 date: "12/18/2018"
 output: 
@@ -21,7 +21,9 @@ library(webshot)
 
 
 ```r
-webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg", delay = 1.0)
+webshot("http://beechtreecenter.com/",
+        "data/beechtree_website.jpg",
+        delay = 1.0)
 ```
 
 ![](presentation_2_files/figure-html/unnamed-chunk-2-1.jpg)<!-- -->
@@ -271,6 +273,10 @@ df %>%
 ## 1 2018-04-03 Tue          88    218.     2.48              9.67
 ```
 
+## Data-ink ratio (Tufte)
+
+
+
 ## Residents per CNA, 2018 Q2, using ggplot2
 
 
@@ -330,11 +336,6 @@ ggsave(plot = last_plot(),
 ```
 
 
-### Data / Ink Ratio (Tufte)
-
-Open png  
-
-
 
 ## Beechtree Family Council
 
@@ -365,12 +366,10 @@ Brown, Jessica. “Letter: Thanks for Repairing Mechanized Wheelchairs.” Ithac
 
 
 ```r
-shot_nyt <- "data/Rau_Jordan_Ghost_Town_NYTimes_July_8_2018.png"
-
-webshot("https://www.nytimes.com/2018/07/07/health/nursing-homes-staffing-medicare.html",
-        shot_nyt,
-        delay = 1.0)
+# shot_nyt <- "data/Rau_Jordan_Ghost_Town_NYTimes_July_8_2018.png"
+# 
+# webshot("https://www.nytimes.com/2018/07/07/health/nursing-homes-staffing-medicare.html",
+#         shot_nyt,
+#         delay = 1.0)
 ```
-
-![](presentation_2_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
