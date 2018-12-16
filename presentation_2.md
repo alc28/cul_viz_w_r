@@ -107,10 +107,6 @@ webshot("http://cms.gov",
 
 ![](presentation_2_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
 
-```r
-# webshot("http://data.cms.gov", "data/data_cms_gov.png", delay = 0.5)
-```
-
 
 ### Payroll-Based Journal (PBJ) staffing data submitted by long term care facilities 
 
@@ -199,7 +195,7 @@ glimpse(df)
 
 ## Residents per CNA formula
 
-"My measure is 24/HPRD. So 2.4 C.N.A. HPRD = 1 C.N.A. to 10 residents. It probably understates the RN hours during the 1st and 2nd shifts and overstates them on the night shift, but there's nothing to be done about that since the data isn't broken down by shifts." [Jordan Rau, Kaiser Health News journalist]
+> "My measure is 24/HPRD. So 2.4 C.N.A. HPRD = 1 C.N.A. to 10 residents. It probably understates the RN hours during the 1st and 2nd shifts and overstates them on the night shift, but there's nothing to be done about that since the data isn't broken down by shifts." [Jordan Rau, Kaiser Health News journalist]
 
 
 
@@ -248,29 +244,16 @@ df %>%
 ```r
 df %>%
   filter(workdate == "2018-04-03") %>%
-  select(mdscensus, hrs_cna)
-```
-
-```
-## # A tibble: 1 x 2
-##   mdscensus hrs_cna
-##       <int>   <dbl>
-## 1        88    218.
-```
-
-```r
-df %>%
-  filter(workdate == "2018-04-03") %>%
   mutate(cna_hprd = hrs_cna / mdscensus,
          residents_per_cna = 24 / cna_hprd) %>%
-  select(workdate, day, mdscensus, hrs_cna, cna_hprd, residents_per_cna)
+  select(workdate, day, hrs_cna, mdscensus, cna_hprd, residents_per_cna)
 ```
 
 ```
 ## # A tibble: 1 x 6
-##   workdate   day   mdscensus hrs_cna cna_hprd residents_per_cna
-##   <date>     <ord>     <int>   <dbl>    <dbl>             <dbl>
-## 1 2018-04-03 Tue          88    218.     2.48              9.67
+##   workdate   day   hrs_cna mdscensus cna_hprd residents_per_cna
+##   <date>     <ord>   <dbl>     <int>    <dbl>             <dbl>
+## 1 2018-04-03 Tue      218.        88     2.48              9.67
 ```
 
 ## Data-ink ratio (Tufte)

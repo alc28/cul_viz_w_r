@@ -21,7 +21,7 @@ library(webshot)
 
 ```
 
-```{r}
+```{r, cache=TRUE}
 
 webshot("http://beechtreecenter.com/",
         "data/beechtree_website.jpg",
@@ -83,8 +83,6 @@ webshot("http://cms.gov",
         delay = 1.0,
         cliprect = "viewport")
 
-# webshot("http://data.cms.gov", "data/data_cms_gov.png", delay = 0.5)
-
 ```
 
 
@@ -132,7 +130,7 @@ glimpse(df)
 
 ## Residents per CNA formula
 
-"My measure is 24/HPRD. So 2.4 C.N.A. HPRD = 1 C.N.A. to 10 residents. It probably understates the RN hours during the 1st and 2nd shifts and overstates them on the night shift, but there's nothing to be done about that since the data isn't broken down by shifts." [Jordan Rau, Kaiser Health News journalist]
+> "My measure is 24/HPRD. So 2.4 C.N.A. HPRD = 1 C.N.A. to 10 residents. It probably understates the RN hours during the 1st and 2nd shifts and overstates them on the night shift, but there's nothing to be done about that since the data isn't broken down by shifts." [Jordan Rau, Kaiser Health News journalist]
 
 
 ```{r}
@@ -145,14 +143,9 @@ df %>%
 
 df %>%
   filter(workdate == "2018-04-03") %>%
-  select(mdscensus, hrs_cna)
-
-df %>%
-  filter(workdate == "2018-04-03") %>%
   mutate(cna_hprd = hrs_cna / mdscensus,
          residents_per_cna = 24 / cna_hprd) %>%
-  select(workdate, day, mdscensus, hrs_cna, cna_hprd, residents_per_cna)
-
+  select(workdate, day, hrs_cna, mdscensus, cna_hprd, residents_per_cna)
 
 ```
 
