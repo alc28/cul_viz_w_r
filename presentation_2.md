@@ -21,7 +21,7 @@ library(webshot)
 
 
 ```r
-webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg", delay = 0.5)
+webshot("http://beechtreecenter.com/", "data/beechtree_website.jpg", delay = 1.0)
 ```
 
 ![](presentation_2_files/figure-html/unnamed-chunk-2-1.jpg)<!-- -->
@@ -118,7 +118,7 @@ https://data.cms.gov/browse?q=pbj&sortBy=relevance
 ```r
 webshot("https://data.cms.gov/Special-Programs-Initiatives-Long-Term-Care-Facili/PBJ-Daily-Nurse-Staffing-CY-2018Q2/7aeu-b3qs",
         "data/pbj_data_cms_gov.png",
-        delay = 0.5)
+        delay = 1.0)
 ```
 
 ![](presentation_2_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
@@ -319,7 +319,7 @@ df %>%
 ggsave(plot = last_plot(),
        filename = "output/beechtree_cna_staffing_pbj_2018_apr-jun.png",
        width=11,
-       height=6,
+       height=7,
        dpi = 600)
 
 ggsave(plot = last_plot(),
