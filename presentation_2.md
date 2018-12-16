@@ -366,10 +366,12 @@ Brown, Jessica. “Letter: Thanks for Repairing Mechanized Wheelchairs.” Ithac
 
 
 ```r
-# shot_nyt <- "data/Rau_Jordan_Ghost_Town_NYTimes_July_8_2018.png"
-# 
-# webshot("https://www.nytimes.com/2018/07/07/health/nursing-homes-staffing-medicare.html",
-#         shot_nyt,
-#         delay = 1.0)
+shot_nyt <- "data/Rau_Jordan_Ghost_Town_NYTimes_July_8_2018.png"
+
+webshot("https://khn.org/news/like-a-ghost-town-erratic-nursing-home-staffing-revealed-through-new-records/",
+        shot_nyt,
+        delay = 1.0)
 ```
+
+![](presentation_2_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
