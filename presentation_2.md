@@ -97,7 +97,10 @@ source: https://www.gpo.gov/fdsys/granule/CFR-2011-title42-vol5/CFR-2011-title42
 
 
 ```r
-webshot("http://cms.gov", "data/cms_gov.png", delay = 1.0)
+webshot("http://cms.gov",
+        "data/cms_gov.png",
+        delay = 1.0,
+        cliprect = "viewport")
 ```
 
 ![](presentation_2_files/figure-html/unnamed-chunk-4-1.png)<!-- -->
@@ -113,7 +116,9 @@ https://data.cms.gov/browse?q=pbj&sortBy=relevance
 
 
 ```r
-webshot("https://data.cms.gov/Special-Programs-Initiatives-Long-Term-Care-Facili/PBJ-Daily-Nurse-Staffing-CY-2018Q2/7aeu-b3qs", "data/pbj_data_cms_gov.png", delay = 0.5)
+webshot("https://data.cms.gov/Special-Programs-Initiatives-Long-Term-Care-Facili/PBJ-Daily-Nurse-Staffing-CY-2018Q2/7aeu-b3qs",
+        "data/pbj_data_cms_gov.png",
+        delay = 0.5)
 ```
 
 ![](presentation_2_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
@@ -127,6 +132,22 @@ webshot("https://data.cms.gov/Special-Programs-Initiatives-Long-Term-Care-Facili
 # newyork_2018.rds is a subset of the PBJ data. RDS is a fileformat used in R, which saves column data types.
 
 df_newyork <- read_rds("data/newyork_2018.rds")
+
+# How many long term care facililities in New York state?
+df_newyork %>%
+  distinct(provname) %>%
+  count
+```
+
+```
+## # A tibble: 1 x 1
+##       n
+##   <int>
+## 1   817
+```
+
+```r
+# filter to only Beechtree
 df <- df_newyork %>%
   filter(provnum == '335017')
 ```
@@ -263,14 +284,13 @@ df %>%
   geom_line(size = 0.02) +
   scale_x_date(date_breaks="1 week", date_labels = "%b %d" ) +
   scale_y_continuous(limits = c(8, 15), breaks = seq(8,15, by = 1)) +
-  labs(title = "Residents per CNA, April - June 2018",
+  labs(x = "",
+       y = "Residents per CNA",
+       title = "Residents per CNA, April - June 2018",
        subtitle = "Beechtree Center for Rehabilitation and Nursing, Ithaca NY",
-       caption = paste("Residents per CNA = 24 / CNA hours per resident day \nData source: https://data.cms.gov/browse?q=PBJ \nCompiled by Adam Chandler, Beechtree Family Council,",
-                       now(),
-                       "\n\n")) +
-  xlab("") +
-  ylab("Residents per CNA") +
-  theme(axis.text.x = element_text(angle = 0, hjust = 0.5)) +
+       caption = paste("Residents per CNA = 24 / CNA hours per resident day \nData source: https://data.cms.gov/browse?q=PBJ \nCompiled by Adam Chandler, Beechtree Family Council,", now(), "\n\n")) +
+  theme(axis.text.x = element_text(angle = 0, hjust = 0.5),
+        axis.ticks.length=unit(0.1, "cm")) +
   theme(panel.grid.minor.y = element_blank(),
         panel.grid.major.y = element_blank(),
         panel.grid.major.x = element_blank(),
@@ -283,7 +303,12 @@ df %>%
         legend.direction = "horizontal",
         legend.title = element_blank()
   ) +
-  guides(fill=guide_legend(nrow=1))
+  guides(fill=guide_legend(nrow=1)) +
+  annotate("text",
+           x = as.Date("2018-04-03", "%Y-%m-%d"),
+           y = 9.55,
+           label = "Tue Apr 03",
+           size = 1.5)
 ```
 
 ![](presentation_2_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
@@ -342,7 +367,10 @@ Brown, Jessica. “Letter: Thanks for Repairing Mechanized Wheelchairs.” Ithac
 ```r
 shot_nyt <- "data/Rau_Jordan_Ghost_Town_NYTimes_July_8_2018.png"
 
-webshot("https://www.nytimes.com/2018/07/07/health/nursing-homes-staffing-medicare.html", shot_nyt, delay = 1.0)
+webshot("https://www.nytimes.com/2018/07/07/health/nursing-homes-staffing-medicare.html",
+        shot_nyt,
+        delay = 1.0)
 ```
 
 ![](presentation_2_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+
