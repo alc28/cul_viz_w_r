@@ -256,8 +256,11 @@ df %>%
 ## 1 2018-04-03 Tue      218.        88     2.48              9.67
 ```
 
-## Data-ink ratio (Tufte)
+## Data-Ink ratio (Tufte)
 
+> A large share of the ink on a graphic should present data-information, the ink changing as the data change. <i>Data-ink</i> is the non-erasable core of a graphic, the non-redundant ink arranged in response to variation in the numbers represented. [Edward Tufte, The Visual Display of Quantitative Information, p. 93]  
+
+#### Data-ink ratio = data-ink / total ink used to print the graphic  
 
 
 ## Residents per CNA, 2018 Q2, using ggplot2
